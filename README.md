@@ -1,6 +1,9 @@
 # coders_forum
 A repo to document the tutorials/rants/discussions/musings at the coder's forum
 
+Links: [Scratchpad](https://docs.google.com/document/d/1ocrq-v7jm3exNSgxgpJxXSx83Q-QR6L1faBA0ciPJ8I/edit?usp=sharing), [Topics](https://docs.google.com/document/d/13q61Xj0J1JbFwYZAcjiyVnDRAkrHkjgttJwFmsaATTI/edit?usp=sharing)
+
+
 To contribute:
 
 1. Run a notebook server locally and fill a notebook with wisdom.
