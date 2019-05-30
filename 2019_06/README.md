@@ -204,6 +204,7 @@ If a package is on PyPI, try using the `conda skeleton` tool:
 conda skeleton pypi <packagename>
 ```
 
+Or a package is on CRAN:
 
 ```bash
 conda skeleton cran <packagename>
@@ -211,7 +212,176 @@ conda skeleton cran <packagename>
 
 # Packaging is hard
 
-Be prepared to fix subtle issues and get into the weeds of debugging a project
+Be prepared to fix subtle issues and get into the weeds of debugging a project.
+
+## pydeface case study
+
+Chosen because John had [forked it at some
+point](https://github.com/leej3/pydeface) and Dylan [has a bunch of commits
+there](https://github.com/poldracklab/pydeface/commits?author=Shotgunosine).
+
+
+Try skeleton:
+
+```bash
+conda skeleton pypi pydeface
+# ImportError: Missing dependencies: ['numpy', 'nibabel', 'nipype']
+
+# (not sure why...they're specified in setup.py)
+```
+
+Manual:
+
+```yaml
+# pydeface/meta.yaml
+package:
+  name: pydeface
+  version: 1.1.0
+
+source:
+  url: https://github.com/poldracklab/pydeface/archive/v1.1.0.tar.gz
+  sha256: 6ef4044828821e0a7d26242b41220ee8287b8f660a8259e82fb13ee6bb3bd70c
+
+build:
+  number: 1
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+
+requirements:
+  host:
+    - python
+  build:
+  run:
+    - python
+    - numpy
+    - nibabel
+    - nipype
+
+test:
+  imports:
+    - pydeface
+
+  commands:
+    - pydeface
+
+about:
+  home: https://github.com/poldracklab/pydeface
+  summary: defacing utility for MRI images
+  license: MIT
+```
+
+```bash
+conda build ./pydeface
+```
+
+```
+pkg_resources.DistributionNotFound: The 'pydot>=1.2.3' distribution was not found and is required by nipype
+Tests failed for pydeface-1.1.0-py37_1.tar.bz2 - moving package to /home/dalerr/miniconda3/envs/cb/conda-bld/broken
+WARNING:conda_build.build:Tests failed for pydeface-1.1.0-py37_1.tar.bz2 - moving package to /home/dalerr/miniconda3/envs/cb/conda-bld/broken
+TESTS FAILED: pydeface-1.1.0-py37_1.tar.bz2
+```
+
+- Does nipype not list pydot as a dependency? Check its recipe: https://anaconda.org/conda-forge/nipype/files
+- It specifies `pydotplus`, but not `pydot`
+- Try adding `pydot` to the `pydeface` recipe dependencies, and re-build:
+
+```bash
+conda build ./pydeface
+```
+
+Another error:
+
+```
++ pydeface
+usage: pydeface [-h] [--outfile path] [--force] [--applyto  [...]]
+                [--cost mutualinfo] [--template path] [--facemask path]
+                [--nocleanup] [--verbose]
+                path
+pydeface: error: the following arguments are required: path
+------------
+pydeface 2.0
+------------
+Tests failed for pydeface-1.1.0-py37_1.tar.bz2 - moving package to /home/dalerr/miniconda3/envs/cb/conda-bld/broken
+WARNING:conda_build.build:Tests failed for pydeface-1.1.0-py37_1.tar.bz2 - moving package to /home/dalerr/miniconda3/envs/cb/conda-bld/broken
+TESTS FAILED: pydeface-1.1.0-py37_1.tar.bz2
+```
+
+Easily fixed, add `-h` to the `pydeface` call:
+
+```yaml
+package:
+  name: pydeface
+  version: 1.1.0
+
+source:
+  url: https://github.com/poldracklab/pydeface/archive/v1.1.0.tar.gz
+  sha256: 6ef4044828821e0a7d26242b41220ee8287b8f660a8259e82fb13ee6bb3bd70c
+
+build:
+  number: 1
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+
+requirements:
+  host:
+    - python
+  build:
+  run:
+    - python
+    - numpy
+    - nibabel
+    - nipype
+    - pydot
+
+test:
+  imports:
+    - pydeface
+
+  commands:
+    - pydeface -h
+
+about:
+  home: https://github.com/poldracklab/pydeface
+  summary: defacing utility for MRI images
+  license: MIT
+```
+
+Hooray! Sucessful locally-built package, ready for a PR to conda-forge or bioconda.
+
+Would be better to more fully test, using the freshly-built package by
+specifying the build directory as a channel (might as well add ipython for help with debugging):
+
+
+```bash
+conda create -n pydeface-test pydeface ipython --channel /home/dalerr/miniconda3/envs/cb/conda-bld/
+```
+
+Another debugging option:
+
+```bash
+conda debug <path-to-built-package>
+```
+
+Import and inspect:
+
+```python
+from pydeface import utils
+utils.initial_checks()
+```
+
+```
+~/miniconda3/envs/pydeface/lib/python3.7/site-packages/pydeface/utils.py in initial_checks(template, facemask)
+     21
+     22     if 'FSLDIR' not in os.environ:
+---> 23         raise Exception("FSL must be installed and "
+     24                         "FSLDIR environment variable must be defined.")
+     25         sys.exit(2)
+
+Exception: FSL must be installed and FSLDIR environment variable must be defined.
+```
+
+Can't redistribute FSL according to [the license](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Licence).
+
+I gave up when I had to register to download FSL...
+
 
 # Being kind to packagers
 
