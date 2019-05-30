@@ -1,0 +1,38 @@
+package:
+  name: pydeface
+  version: 1.1.0
+
+source:
+  url: https://github.com/poldracklab/pydeface/archive/v1.1.0.tar.gz
+  sha256: 6ef4044828821e0a7d26242b41220ee8287b8f660a8259e82fb13ee6bb3bd70c
+
+build:
+  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+
+requirements:
+  host:
+    - python
+  build:
+  run:
+    - python
+    - numpy
+    - nibabel
+    - nipype
+
+    # Note: test complains that nipype needs pydot, but the nipype recipe at
+    # https://github.com/conda-forge/nipype-feedstock/blob/master/recipe/meta.yaml
+    # only specifies pydotplus. Adding it here allows the test below to pass.
+    - pydot
+
+test:
+  imports:
+    - pydeface
+
+  commands:
+    - pydeface -h
+
+about:
+  home: https://github.com/poldracklab/pydeface
+  summary: defacing utility for MRI images 
+  license: MIT
