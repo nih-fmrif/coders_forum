@@ -163,7 +163,13 @@ https://conda.anaconda.org/conda-forge/linux-64/pandas-0.17.1-np111py35_0.tar.bz
 https://conda.anaconda.org/conda-forge/linux-64/pip-18.0-py35_1001.tar.bz2
 ```
 
+### Shared environments
 
+In a shared directory, others can activate the same environment:
+
+```bash
+conda env create -p ./env --file env.yaml
+```
 
 
 ## Channels
@@ -171,7 +177,7 @@ https://conda.anaconda.org/conda-forge/linux-64/pip-18.0-py35_1001.tar.bz2
 A channel is a repository of recipes.
 
 - [conda-forge docs](http://conda-forge.org/docs/)
-- [bioconda](bioconda: https://bioconda.github.io/)
+- [bioconda](https://bioconda.github.io/)
 
 Bioconda and conda-forge coordinate global pinnings to ensure ABI compatibility
 across packages in both channels. This is not guaranteed (or even likely) using
@@ -184,22 +190,20 @@ other arbitrary channels.
 
 # Anatomy of a package
 
-- samtools package: https://anaconda.org/bioconda/samtools/0.1.19/download/linux-64/samtools-0.1.19-h94a8ba4_6.tar.bz2
-- requests package: https://anaconda.org/conda-forge/requests/2.22.0/download/linux-64/requests-2.22.0-py37_0.tar.bz2
-
+- [samtools package](https://anaconda.org/bioconda/samtools/0.1.19/download/linux-64/samtools-0.1.19-h94a8ba4_6.tar.bz2)
+- [requests package](https://anaconda.org/conda-forge/requests/2.22.0/download/linux-64/requests-2.22.0-py37_0.tar.bz2)
 - [overview of the conda build process](https://docs.conda.io/projects/conda-build/en/latest/concepts/recipe.html)
 - [conda-forge list of feedstocks](https://github.com/conda-forge/feedstocks/tree/master/feedstocks)
 
 
 # Conda skeleton
 
-If a package is on PyPI:
+If a package is on PyPI, try using the `conda skeleton` tool:
 
 ```bash
 conda skeleton pypi <packagename>
 ```
 
-If a package is on CRAN:
 
 ```bash
 conda skeleton cran <packagename>
