@@ -1,0 +1,6 @@
+[submodule "2019_07"]
+	path = 2019_07
+	url = https://github.com/Shotgunosine/extensions_talk
+[submodule "2019_08"]
+	path = 2019_08
+	url = https://github.com/Shotgunosine/ipynb_to_pip.git
