@@ -149,6 +149,9 @@ Playing with ribbon geometry (circa 2016)...
 - Edit image for publication (to say, add a legend)
 
 
+### [See tutorials for more info than you need to know](http://circos.ca/documentation/tutorials/)
+
+
 -----
 
 ## Example
@@ -290,6 +293,24 @@ ggplot(new, aes(age,res,color=Group)) +
 
 ### Prepare Circos data files
 
+#### The karyotpye file
+
+More info [here](http://circos.ca/documentation/tutorials/ideograms/karyotypes/)
+
+```
+chr - ID LABEL START END COLOR
+band ID LABEL LABEL START END COLOR
+```
+
+- `chr`: definition of a chromosome
+- `band`: band within a chromosome
+- `ID`: identifer, which can be used in plot labels
+- `start` and `end`: denotes the size of the chromosome (eg 0 99)
+- `color`
+
+-----
+
+
 #### Manually created structure file
 
 ```{r engine = 'bash', comment = ''}
@@ -390,7 +411,23 @@ cat ./circos_data/data/segments.txt
 -----
 
 
-#### Links
+### Links
+
+#### Defining links
+
+More info [here](http://circos.ca/documentation/tutorials/links/basic_links/)
+
+```
+CHR_START START END CHR_END START END type=1, score=1
+```
+
+`CHR_START`: Chromosome link begins
+`START` and `END`: location on chromosome
+`type`: can be used for rules
+`score`: can be used for rules (I use it for link weight)
+
+-----
+
 
 For the poster I wanted 4 connectograms to show the group by age interaction:
 
