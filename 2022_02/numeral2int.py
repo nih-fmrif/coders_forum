@@ -13,6 +13,11 @@ def numeral2int(numeral):
     Returns
     -------
     int
-        Integer implementation 
+        Integer value of roman numeral
+
+    Raises
+    ------
+    ValueError
+        If one of the inputs is not a valid roman numeral.
     """
     pass
