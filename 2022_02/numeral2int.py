@@ -20,7 +20,7 @@ def numeral2int(numeral):
 
     for character in numeral_list:
         if character not in numeral_dict.keys():
-            raise ValueError('Invalid Roman Numeral "' + str(character) + '": using a numeral not contained in the dictionary')
+            raise ValueError(f'Invalid Roman Numeral "{str(character)}": using a numeral not contained in the dictionary ({numeral_dict.keys()}).')
 
     # reverse the list order
     numeral_list.reverse()
