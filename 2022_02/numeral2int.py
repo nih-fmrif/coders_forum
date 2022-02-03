@@ -1,5 +1,25 @@
 def numeral2int(numeral):
-    """Convert a Roman Numeral to an int"""
+    """
+    Convert a roman numeral as a string to an integer.
+
+    Parameters
+    ----------
+    s : str
+        Roman numeral to be converted to an integer
+
+
+    Returns
+    -------
+    int
+        Integer value of Roman numeral
+
+    Raises
+    ------
+    ValueError
+        If one of the inputs is not a valid Roman numeral.
+    """
+    if numeral == "":
+        raise ValueError("Empty Roman numeral. For historical accuracy, we don't return 0.")
 
     # forcing all characters to uppercase
     numeral = numeral.upper()
@@ -20,7 +40,8 @@ def numeral2int(numeral):
 
     for character in numeral_list:
         if character not in numeral_dict.keys():
-            raise ValueError(f'Invalid Roman Numeral "{str(character)}": using a numeral not contained in the dictionary ({numeral_dict.keys()}).')
+            raise ValueError(f'Invalid Roman Numeral "{str(character)}":' \
+                f' using a numeral not contained in the dictionary ({numeral_dict.keys()}).')
 
     # reverse the list order
     numeral_list.reverse()
