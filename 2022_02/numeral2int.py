@@ -11,13 +11,16 @@ def numeral2int(numeral):
     Returns
     -------
     int
-        Integer value of roman numeral
+        Integer value of Roman numeral
 
     Raises
     ------
     ValueError
-        If one of the inputs is not a valid roman numeral.
+        If one of the inputs is not a valid Roman numeral.
     """
+    if numeral == "":
+        raise ValueError("Empty Roman numeral. For historical accuracy, we don't return 0.")
+
     # forcing all characters to uppercase
     numeral = numeral.upper()
 

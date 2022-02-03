@@ -9,7 +9,7 @@ def tests_numeral2int_fails():
     with pytest.raises(ValueError, match=r"Invalid"):
         numeral2int("P")
 
-    with pytest.raises(ValueError, match=r"Empty roman numeral"):
+    with pytest.raises(ValueError, match=r"Empty Roman numeral"):
         numeral2int("")
 
 def test_numeral2int_succeeds():
